@@ -180,6 +180,10 @@ dctl/
 └── Makefile
 ```
 
+## Credits
+
+Built by [Ravi Atluri](https://github.com/sonnes) and [Claude Code](https://claude.ai/code) (Anthropic's AI coding agent).
+
 ## License
 
 Apache License 2.0
