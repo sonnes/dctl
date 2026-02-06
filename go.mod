@@ -1,4 +1,4 @@
-module github.com/raviatluri/dctl
+module github.com/sonnes/dctl
 
 go 1.23
 

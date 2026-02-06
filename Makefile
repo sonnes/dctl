@@ -1,7 +1,7 @@
 BINARY := dctl
 BUILD_DIR := bin
 VERSION ?= $(shell git describe --tags --always 2>/dev/null || echo "dev")
-LDFLAGS := -ldflags "-X github.com/raviatluri/dctl/cmd.Version=$(VERSION)"
+LDFLAGS := -ldflags "-X github.com/sonnes/dctl/cmd.Version=$(VERSION)"
 
 .DEFAULT_GOAL := build
 

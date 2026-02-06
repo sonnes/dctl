@@ -13,7 +13,7 @@ Docker Compose compatible CLI for [Apple container](https://github.com/apple/con
 ## Install
 
 ```bash
-git clone https://github.com/raviatluri/dctl.git
+git clone https://github.com/sonnes/dctl.git
 cd dctl
 make build
 # Binary is at bin/dctl

@@ -8,8 +8,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/raviatluri/dctl/pkg/compose"
-	"github.com/raviatluri/dctl/pkg/runner"
+	"github.com/sonnes/dctl/pkg/compose"
+	"github.com/sonnes/dctl/pkg/runner"
 	"github.com/urfave/cli/v3"
 	"gopkg.in/yaml.v3"
 )

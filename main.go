@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/raviatluri/dctl/cmd"
+	"github.com/sonnes/dctl/cmd"
 )
 
 func main() {
