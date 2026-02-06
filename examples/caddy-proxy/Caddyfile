@@ -1,0 +1,22 @@
+# Caddy reverse proxy configuration for multiple domains.
+#
+# Caddy automatically obtains and renews TLS certificates from
+# Let's Encrypt / ZeroSSL — no manual certificate management needed.
+#
+# Replace the domain names below with your own. Each block proxies
+# HTTPS traffic to the corresponding compose service by name.
+
+{
+	# Email used for ACME (Let's Encrypt) account registration.
+	email you@example.com
+}
+
+# Domain 1 → app1 service on port 3000
+app1.example.com {
+	reverse_proxy app1:3000
+}
+
+# Domain 2 → app2 service on port 4000
+app2.example.com {
+	reverse_proxy app2:4000
+}

@@ -1,0 +1,67 @@
+# Caddy HTTPS reverse proxy with multiple domains and apps.
+#
+# Caddy automatically provisions TLS certificates from Let's Encrypt.
+# Each domain in the Caddyfile routes to a different backend service.
+#
+# Before running:
+#   1. Edit Caddyfile — replace example.com domains with your own
+#   2. Ensure DNS records point to this host
+#
+# Start: dctl compose up -d
+# Logs:  dctl compose logs -f caddy
+# Stop:  dctl compose down
+# Clean: dctl compose down -v   (removes TLS certs)
+name: caddy-proxy
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - app1
+      - app2
+    networks:
+      - proxy
+
+  # Placeholder app on port 3000.
+  # Replace with your real application image.
+  app1:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command:
+      - sh
+      - -c
+      - |
+        while true; do
+          echo -e "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello from app1" \
+            | nc -l -p 3000 -w 1
+        done
+    networks:
+      - proxy
+
+  # Placeholder app on port 4000.
+  # Replace with your real application image.
+  app2:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command:
+      - sh
+      - -c
+      - |
+        while true; do
+          echo -e "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello from app2" \
+            | nc -l -p 4000 -w 1
+        done
+    networks:
+      - proxy
+
+volumes:
+  caddy_data:    # TLS certificates and ACME state
+  caddy_config:  # Caddy runtime configuration
+
+networks:
+  proxy:
