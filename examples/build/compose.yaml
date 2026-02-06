@@ -1,0 +1,16 @@
+# Example using a custom Dockerfile build.
+# Build:  dctl compose build
+# Start:  dctl compose up -d --build
+# Logs:   dctl compose logs app
+# Stop:   dctl compose down
+name: build-example
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        GREETING: "Hello from a custom build!"
+    image: dctl-build-example
+    command: ["sh", "-c", "cat /etc/greeting && sleep infinity"]

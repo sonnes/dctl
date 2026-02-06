@@ -1,0 +1,26 @@
+# Custom networks example.
+# Services on the same network can communicate by name.
+# Start: dctl compose up -d
+# Test:  dctl compose exec -T frontend ping -c1 backend
+# Stop:  dctl compose down
+name: network-example
+
+services:
+  frontend:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command: ["sleep", "infinity"]
+    networks:
+      - public
+      - internal
+
+  backend:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command: ["sleep", "infinity"]
+    networks:
+      - internal
+
+networks:
+  public:
+    name: app-public
+  internal:
+    internal: true

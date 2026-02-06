@@ -1,0 +1,24 @@
+# Simple web server with environment variables and port mapping.
+# Start: dctl compose up -d
+# Test:  curl http://localhost:8080
+# Stop:  dctl compose down
+name: web-app
+
+services:
+  web:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command:
+      - sh
+      - -c
+      - |
+        echo "Serving on port $PORT..."
+        while true; do
+          echo -e "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nHello from $APP_NAME" \
+            | nc -l -p "$PORT" -w 1
+        done
+    ports:
+      - "${HOST_PORT:-8080}:8080"
+    environment:
+      APP_NAME: ${APP_NAME:-dctl-demo}
+      PORT: "8080"
+    restart: unless-stopped

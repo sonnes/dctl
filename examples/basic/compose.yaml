@@ -1,0 +1,9 @@
+# Basic single-service example.
+# Start: dctl compose up -d
+# Check: dctl compose ps
+# Logs:  dctl compose logs
+# Stop:  dctl compose down
+services:
+  app:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command: ["sh", "-c", "echo 'Hello from dctl!' && sleep infinity"]

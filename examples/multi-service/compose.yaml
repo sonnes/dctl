@@ -1,0 +1,42 @@
+# Multi-service application with dependency ordering.
+# The API starts only after db and cache are running.
+# Start: dctl compose up -d
+# Check: dctl compose ps
+# Logs:  dctl compose logs api
+# Stop:  dctl compose down -v
+name: multi-service
+
+services:
+  db:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command: ["sh", "-c", "echo 'db ready' && sleep infinity"]
+    volumes:
+      - db-data:/var/lib/data
+    environment:
+      DB_NAME: myapp
+
+  cache:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command: ["sh", "-c", "echo 'cache ready' && sleep infinity"]
+
+  api:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command: ["sh", "-c", "echo 'api starting...' && sleep infinity"]
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: db
+      CACHE_HOST: cache
+    depends_on:
+      - db
+      - cache
+
+  worker:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command: ["sh", "-c", "echo 'worker processing...' && sleep infinity"]
+    depends_on:
+      db:
+        condition: service_started
+
+volumes:
+  db-data:

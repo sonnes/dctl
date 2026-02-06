@@ -1,0 +1,24 @@
+# Volume examples: named volumes and bind mounts.
+# Start: dctl compose up -d
+# Write: dctl compose exec -T writer sh -c 'echo "shared data" > /data/hello.txt'
+# Read:  dctl compose exec -T reader cat /data/hello.txt
+# Stop:  dctl compose down       (volume preserved)
+# Clean: dctl compose down -v    (volume removed)
+name: volume-example
+
+services:
+  writer:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command: ["sleep", "infinity"]
+    volumes:
+      - shared-data:/data
+      - ./config:/etc/app/config:ro
+
+  reader:
+    image: ghcr.io/linuxcontainers/alpine:3.20
+    command: ["sleep", "infinity"]
+    volumes:
+      - shared-data:/data:ro
+
+volumes:
+  shared-data:
