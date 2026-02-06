@@ -1,22 +1,22 @@
-# Caddy reverse proxy configuration for multiple domains.
+# Caddy reverse proxy for local development.
 #
-# Caddy automatically obtains and renews TLS certificates from
-# Let's Encrypt / ZeroSSL — no manual certificate management needed.
+# Uses Caddy's internal CA to issue TLS certificates for local domains.
+# Add entries to /etc/hosts to point these domains to 127.0.0.1:
 #
-# Replace the domain names below with your own. Each block proxies
-# HTTPS traffic to the corresponding compose service by name.
+#   127.0.0.1  app1.local.dev app2.local.dev
+#
+# Note: Apple container runtime does not provide DNS for service names.
+# Use container IPs on the shared network instead. Find IPs with:
+#   container list --format json | jq '.[].networks'
 
-{
-	# Email used for ACME (Let's Encrypt) account registration.
-	email you@example.com
+# Domain 1 → app1 container (192.168.66.2:3000)
+app1.local.dev {
+	tls internal
+	reverse_proxy 192.168.66.2:3000
 }
 
-# Domain 1 → app1 service on port 3000
-app1.example.com {
-	reverse_proxy app1:3000
-}
-
-# Domain 2 → app2 service on port 4000
-app2.example.com {
-	reverse_proxy app2:4000
+# Domain 2 → app2 container (192.168.66.3:4000)
+app2.local.dev {
+	tls internal
+	reverse_proxy 192.168.66.3:4000
 }
